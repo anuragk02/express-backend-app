@@ -13,7 +13,7 @@ const QUESTIONS = [{
     }]
 }];
 
-const SUBMISSION = [
+const SUBMISSIONS = [
 
 ]
 
@@ -50,11 +50,30 @@ app.post('/login', (req, res) => {
 
 
 app.get('/questions', (req, res) => {
-    res.status(200).json({ QUESTIONS });
+    res.status(200).json(QUESTIONS);
 });
 
-app.get('submissions', (req, res) => {
-    res.send('Hello World!')
+app.get('/getSubmissions', (req, res) => {
+    const {email, title} = req.body;
+    const submission = SUBMISSIONS.find((submission) => SUBMISSIONS.email === email)
+
+    if(!submission) {
+        return res.status(404).json({messege: 'No Submission found.'});
+    }
+
+    console.log('submissions found');
+
+    return res.status(200).json(submission);
+});
+
+app.post('/postSubmissions', (req, res) => {
+    const {email, title, submission} = req.body;
+
+    var accepted = Math. random() >= 0.5;
+
+    SUBMISSIONS.push({email, title, submission, accepted});
+
+    return res.status(200).json({message: 'Submission posted'})
 })
 
 app.listen(port, () => {
